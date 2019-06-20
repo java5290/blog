@@ -19,7 +19,7 @@
 <meta property="og:image" content="https://java5290.github.io/blog/2019/06/20/无状态应用之JWT的token实战/image/token/token_http_sync.png">
 <meta property="og:image" content="https://java5290.github.io/blog/2019/06/20/无状态应用之JWT的token实战/image/token/token_http_async.png">
 <meta property="og:image" content="https://java5290.github.io/blog/2019/06/20/无状态应用之JWT的token实战/image/token/jwt.png">
-<meta property="og:updated_time" content="2019-06-20T07:03:49.959Z">
+<meta property="og:updated_time" content="2019-06-20T07:51:51.798Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="无状态应用之JWT的token实战">
 <meta name="twitter:description" content="第1章 无状态基于http协议的无状态性，再加上目前产品客户端的多样性，我们在设计分布式应用系统的时候就必须考虑应用的状态。 无状态应用：应用会话中不保存下次会话访问所需要的客户端数据，即通俗的讲每一次的应用访问都是新的访问，不依赖之前的数据进行响应。在分布式系统中，无状态应用可以简单、快速的进行应用水平扩展。 有状态应用：应用会话中保存客户端的数据，并在客户端下次的请求中会使用这些数据。 本文所">
@@ -100,6 +100,7 @@
 <p>无状态应用：应用会话中不保存下次会话访问所需要的客户端数据，即通俗的讲每一次的应用访问都是新的访问，不依赖之前的数据进行响应。在分布式系统中，无状态应用可以简单、快速的进行应用水平扩展。</p>
 <p>有状态应用：应用会话中保存客户端的数据，并在客户端下次的请求中会使用这些数据。</p>
 <p>本文所述，是基于JWT认证协议下的token（令牌）在实际应用中的刷新问题的记录。</p>
+<a id="more"></a>
 <h2 id="第2章-token签发"><a href="#第2章-token签发" class="headerlink" title="第2章 token签发"></a>第2章 token签发</h2><p><img src="./image/token/token_create.png" alt="token创建时序图"></p>
 <h2 id="第3章-token刷新"><a href="#第3章-token刷新" class="headerlink" title="第3章 token刷新"></a>第3章 token刷新</h2><h3 id="3-1-为什么要刷新"><a href="#3-1-为什么要刷新" class="headerlink" title="3.1 为什么要刷新"></a>3.1 为什么要刷新</h3><p>安全：长时间使用同一个token存有风险。</p>
 <p>用户体验：无感刷新，延长用户访问系统时间。</p>

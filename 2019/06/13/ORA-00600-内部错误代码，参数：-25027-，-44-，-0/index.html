@@ -7,18 +7,18 @@
   
   <title>ORA-00600: 内部错误代码，参数：[25027]，[44]，[0] | stay clam, keep a good attitude, just now!</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="问题起因数据库服务器和磁盘阵列之间的交换机突然掉电导致。 问题显现因某些表中含有clob大字段，在保存或者更新clob大字段的时候，出现此错误提示。 解决方式对含有clob字段的表，进行exp-&amp;gt;drop-&amp;gt;imp操作，最终解决了此问题。 分析总结SCNSCN是一个6字节的数字，其值为2^48，分为2部分： SCN_BASE是一个4字节的数字； SCN_WRAP是一个2字节的数字。 每">
+  <meta name="description" content="问题起因数据库服务器和磁盘阵列之间的交换机突然掉电导致。 问题显现因某些表中含有clob大字段，在保存或者更新clob大字段的时候，出现此错误提示。 解决方式对含有clob字段的表，进行exp-&amp;gt;drop-&amp;gt;imp操作，最终解决了此问题。">
 <meta name="keywords" content="oracle">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ORA-00600: 内部错误代码，参数：[25027]，[44]，[0]">
 <meta property="og:url" content="https://java5290.github.io/blog/2019/06/13/ORA-00600-内部错误代码，参数：-25027-，-44-，-0/index.html">
 <meta property="og:site_name" content="stay clam, keep a good attitude, just now!">
-<meta property="og:description" content="问题起因数据库服务器和磁盘阵列之间的交换机突然掉电导致。 问题显现因某些表中含有clob大字段，在保存或者更新clob大字段的时候，出现此错误提示。 解决方式对含有clob字段的表，进行exp-&amp;gt;drop-&amp;gt;imp操作，最终解决了此问题。 分析总结SCNSCN是一个6字节的数字，其值为2^48，分为2部分： SCN_BASE是一个4字节的数字； SCN_WRAP是一个2字节的数字。 每">
+<meta property="og:description" content="问题起因数据库服务器和磁盘阵列之间的交换机突然掉电导致。 问题显现因某些表中含有clob大字段，在保存或者更新clob大字段的时候，出现此错误提示。 解决方式对含有clob字段的表，进行exp-&amp;gt;drop-&amp;gt;imp操作，最终解决了此问题。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-06-13T01:25:47.934Z">
+<meta property="og:updated_time" content="2019-06-20T07:52:14.798Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ORA-00600: 内部错误代码，参数：[25027]，[44]，[0]">
-<meta name="twitter:description" content="问题起因数据库服务器和磁盘阵列之间的交换机突然掉电导致。 问题显现因某些表中含有clob大字段，在保存或者更新clob大字段的时候，出现此错误提示。 解决方式对含有clob字段的表，进行exp-&amp;gt;drop-&amp;gt;imp操作，最终解决了此问题。 分析总结SCNSCN是一个6字节的数字，其值为2^48，分为2部分： SCN_BASE是一个4字节的数字； SCN_WRAP是一个2字节的数字。 每">
+<meta name="twitter:description" content="问题起因数据库服务器和磁盘阵列之间的交换机突然掉电导致。 问题显现因某些表中含有clob大字段，在保存或者更新clob大字段的时候，出现此错误提示。 解决方式对含有clob字段的表，进行exp-&amp;gt;drop-&amp;gt;imp操作，最终解决了此问题。">
   
     <link rel="alternate" href="/blog/atom.xml" title="stay clam, keep a good attitude, just now!" type="application/atom+xml">
   
@@ -94,6 +94,7 @@
         <h2 id="问题起因"><a href="#问题起因" class="headerlink" title="问题起因"></a>问题起因</h2><p>数据库服务器和磁盘阵列之间的交换机突然掉电导致。</p>
 <h2 id="问题显现"><a href="#问题显现" class="headerlink" title="问题显现"></a>问题显现</h2><p>因某些表中含有clob大字段，在保存或者更新clob大字段的时候，出现此错误提示。</p>
 <h2 id="解决方式"><a href="#解决方式" class="headerlink" title="解决方式"></a>解决方式</h2><p>对含有clob字段的表，进行exp-&gt;drop-&gt;imp操作，最终解决了此问题。</p>
+<a id="more"></a>
 <h2 id="分析总结"><a href="#分析总结" class="headerlink" title="分析总结"></a>分析总结</h2><h3 id="SCN"><a href="#SCN" class="headerlink" title="SCN"></a>SCN</h3><p>SCN是一个6字节的数字，其值为2^48，分为2部分：</p>
 <p>SCN_BASE是一个4字节的数字；</p>
 <p>SCN_WRAP是一个2字节的数字。</p>
