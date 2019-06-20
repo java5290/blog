@@ -70,6 +70,88 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-无状态应用之JWT的token实战" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/blog/2019/06/20/无状态应用之JWT的token实战/" class="article-date">
+  <time datetime="2019-06-20T03:16:50.000Z" itemprop="datePublished">2019-06-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/blog/2019/06/20/无状态应用之JWT的token实战/">无状态应用之JWT的token实战</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="第1章-无状态"><a href="#第1章-无状态" class="headerlink" title="第1章 无状态"></a>第1章 无状态</h2><p>基于http协议的无状态性，再加上目前产品客户端的多样性，我们在设计分布式应用系统的时候就必须考虑应用的状态。</p>
+<p>无状态应用：应用会话中不保存下次会话访问所需要的客户端数据，即通俗的讲每一次的应用访问都是新的访问，不依赖之前的数据进行响应。在分布式系统中，无状态应用可以简单、快速的进行应用水平扩展。</p>
+<p>有状态应用：应用会话中保存客户端的数据，并在客户端下次的请求中会使用这些数据。</p>
+<p>本文所述，是基于JWT认证协议下的token（令牌）在实际应用中的刷新问题的记录。</p>
+<h2 id="第2章-token签发"><a href="#第2章-token签发" class="headerlink" title="第2章 token签发"></a>第2章 token签发</h2><p><img src="./image/token/token_create.png" alt="token创建时序图"></p>
+<h2 id="第3章-token刷新"><a href="#第3章-token刷新" class="headerlink" title="第3章 token刷新"></a>第3章 token刷新</h2><h3 id="3-1-为什么要刷新"><a href="#3-1-为什么要刷新" class="headerlink" title="3.1 为什么要刷新"></a>3.1 为什么要刷新</h3><p>安全：长时间使用同一个token存有风险。</p>
+<p>用户体验：无感刷新，延长用户访问系统时间。</p>
+<h3 id="3-2-怎么刷新"><a href="#3-2-怎么刷新" class="headerlink" title="3.2 怎么刷新"></a>3.2 怎么刷新</h3><p>为了提高系统的安全性，我们将刷新的情况分为两大类：</p>
+<ul>
+<li>同步请求刷新</li>
+<li>异步请求刷新</li>
+</ul>
+<h4 id="3-2-1-同步请求"><a href="#3-2-1-同步请求" class="headerlink" title="3.2.1 同步请求"></a>3.2.1 同步请求</h4><p>客户端每次发送同步请求之前，必须手动验证token是否需要刷新，并且这个验证token本身的请求是使用ajax同步请求。</p>
+<p><img src="./image/token/token_http_sync.png" alt="同步请求token刷新时序图"></p>
+<h4 id="3-2-2-异步请求"><a href="#3-2-2-异步请求" class="headerlink" title="3.2.2 异步请求"></a>3.2.2 异步请求</h4><p>客户端每次发送异步请求的时候，必须在header中携带token值。在后端过滤器中验证token是否需要刷新。</p>
+<p><img src="./image/token/token_http_async.png" alt="异步请求token刷新时序图"></p>
+<h3 id="3-3-刷新的并发问题"><a href="#3-3-刷新的并发问题" class="headerlink" title="3.3 刷新的并发问题"></a>3.3 刷新的并发问题</h3><p>在同一个页面过来好几个请求，恰好token该刷新了，那么我们不能拒绝请求，我们使用白名单解决这个问题。即当前token在缓存中记录30秒或者60秒，以便其他请求能继续执行，刷新后的token必须在controller的接口中能被获取，我们使用request包装器来解决这个问题。</p>
+<h3 id="3-4-F5刷新问题"><a href="#3-4-F5刷新问题" class="headerlink" title="3.4 F5刷新问题"></a>3.4 F5刷新问题</h3><p>基于浏览器的页面刷新机制，在token还在生存期内这样刷新是没问题的，假如token本身已过期，那么我们使用request包装器来解决这个问题。</p>
+<h2 id="第4章-JWT"><a href="#第4章-JWT" class="headerlink" title="第4章 JWT"></a>第4章 JWT</h2><h3 id="4-1-JWT介绍"><a href="#4-1-JWT介绍" class="headerlink" title="4.1 JWT介绍"></a>4.1 JWT介绍</h3><p><img src="./image/token/jwt.png" alt="JWT"><br>参考：<a href="http://blog.leapoahead.com/2015/09/06/understanding-jwt/" target="_blank" rel="noopener">http://blog.leapoahead.com/2015/09/06/understanding-jwt/</a></p>
+<p>JWT：表示JSON Web Tokens，是一个非常轻巧的规范，这个规范允许我们使用JWT在用户和服务器之间传递安全可靠的信息，分三个部分：</p>
+<ul>
+<li>header、头部</li>
+<li>payload、载荷</li>
+<li>signature、签名</li>
+</ul>
+<p>中间用点分隔开，并且都会使用Base64编码。</p>
+<h4 id="Header"><a href="#Header" class="headerlink" title="Header"></a>Header</h4><p>主要包括两部分内容，一个是Token的类型，另一个是指定签名的算法，示例：</p>
+<p>{</p>
+<p>  “typ”: “JWT”,</p>
+<p>  “alg”: ”HS256”</p>
+<p>}</p>
+<h4 id="Payload"><a href="#Payload" class="headerlink" title="Payload"></a>Payload</h4><p>是Token的具体内容，这些内容里面有一些是标准字段，我们可以添加其它需要的内容，下面是标准字段：</p>
+<p>iss：Issuer，发行者</p>
+<p>sub：Subject，主题</p>
+<p>aud：Audience，观众</p>
+<p>exp：Expiration time，过期时间</p>
+<p>nbf：Not before</p>
+<p>iat：Issued at，发行时间</p>
+<p>jti：JWT ID</p>
+<h4 id="Signature"><a href="#Signature" class="headerlink" title="Signature"></a>Signature</h4><p>这部分内容包括三部分，先是用Base64编码的header.payload，再用加密算法加密一下，加密的时候放进去一个Secret，这个相当于是一个密码（秘钥），这个密码秘密地存储在服务端。</p>
+<h4 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h4><p>Base64是一种基于64个可打印字符来表示二进制数据的表示方法（是一种编码而非加密）。由于2的6次方等于64，所以每6个比特位为一个单元，对应某个可打印字符。三个字节有24比特，对应于4个Base64单元，即3个字节需要4个可打印字符来表示。比如：xxxx.yyyyy.zzzzz。</p>
+<h3 id="4-2-JWT安全性"><a href="#4-2-JWT安全性" class="headerlink" title="4.2 JWT安全性"></a>4.2 JWT安全性</h3><p>确保签名的秘钥安全，只允许发行者和消费者访问，不能在这两方之外访问；</p>
+<p>不要在JWT中包含任何敏感数据；</p>
+<p>采用timestamp+nonce阻止重播攻击。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://java5290.github.io/blog/2019/06/20/无状态应用之JWT的token实战/" data-id="cjx4a8obv0005hwdk95n1fplo" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/分布式系统/">分布式系统</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-ORA-00600-内部错误代码，参数：-25027-，-44-，-0" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/blog/2019/06/13/ORA-00600-内部错误代码，参数：-25027-，-44-，-0/" class="article-date">
@@ -116,7 +198,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://java5290.github.io/blog/2019/06/13/ORA-00600-内部错误代码，参数：-25027-，-44-，-0/" data-id="cjwvdxk1i0000v8dkfp8lm7eb" class="article-share-link">Share</a>
+      <a data-url="https://java5290.github.io/blog/2019/06/13/ORA-00600-内部错误代码，参数：-25027-，-44-，-0/" data-id="cjx4a8ob90000hwdkwjliwkmb" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/oracle/">oracle</a></li></ul>
@@ -165,7 +247,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://java5290.github.io/blog/2019/06/13/保持冷静，保持良好的心态，就现在/" data-id="cjwvdxk230004v8dkomjuhi9w" class="article-share-link">Share</a>
+      <a data-url="https://java5290.github.io/blog/2019/06/13/保持冷静，保持良好的心态，就现在/" data-id="cjx4a8obt0004hwdk6zm9q1ap" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/自我调节/">自我调节</a></li></ul>
@@ -216,7 +298,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://java5290.github.io/blog/2019/05/31/hello-world/" data-id="cjwvdxk1w0002v8dk87bql4om" class="article-share-link">Share</a>
+      <a data-url="https://java5290.github.io/blog/2019/05/31/hello-world/" data-id="cjx4a8obm0002hwdku4r4qyhr" class="article-share-link">Share</a>
       
       
     </footer>
@@ -239,7 +321,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/oracle/">oracle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/自我调节/">自我调节</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/oracle/">oracle</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/分布式系统/">分布式系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/blog/tags/自我调节/">自我调节</a></li></ul>
     </div>
   </div>
 
@@ -249,7 +331,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/blog/tags/oracle/" style="font-size: 10px;">oracle</a> <a href="/blog/tags/自我调节/" style="font-size: 10px;">自我调节</a>
+      <a href="/blog/tags/oracle/" style="font-size: 10px;">oracle</a> <a href="/blog/tags/分布式系统/" style="font-size: 10px;">分布式系统</a> <a href="/blog/tags/自我调节/" style="font-size: 10px;">自我调节</a>
     </div>
   </div>
 
@@ -269,6 +351,10 @@
     <h3 class="widget-title">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/blog/2019/06/20/无状态应用之JWT的token实战/">无状态应用之JWT的token实战</a>
+          </li>
         
           <li>
             <a href="/blog/2019/06/13/ORA-00600-内部错误代码，参数：-25027-，-44-，-0/">ORA-00600: 内部错误代码，参数：[25027]，[44]，[0]</a>
