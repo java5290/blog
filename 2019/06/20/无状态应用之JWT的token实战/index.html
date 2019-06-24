@@ -15,15 +15,15 @@
 <meta property="og:site_name" content="stay clam, keep a good attitude, just now!">
 <meta property="og:description" content="第1章 无状态基于http协议的无状态性，再加上目前产品客户端的多样性，我们在设计分布式应用系统的时候就必须考虑应用的状态。 无状态应用：应用会话中不保存下次会话访问所需要的客户端数据，即通俗的讲每一次的应用访问都是新的访问，不依赖之前的数据进行响应。在分布式系统中，无状态应用可以简单、快速的进行应用水平扩展。 有状态应用：应用会话中保存客户端的数据，并在客户端下次的请求中会使用这些数据。 本文所">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://java5290.github.io/blog/2019/06/20/无状态应用之JWT的token实战/image/token/token_create.png">
-<meta property="og:image" content="https://java5290.github.io/blog/2019/06/20/无状态应用之JWT的token实战/image/token/token_http_sync.png">
-<meta property="og:image" content="https://java5290.github.io/blog/2019/06/20/无状态应用之JWT的token实战/image/token/token_http_async.png">
-<meta property="og:image" content="https://java5290.github.io/blog/2019/06/20/无状态应用之JWT的token实战/image/token/jwt.png">
-<meta property="og:updated_time" content="2019-06-20T07:51:51.798Z">
+<meta property="og:image" content="https://github.com/java5290/image/raw/master/token/token_create.png">
+<meta property="og:image" content="https://github.com/java5290/image/raw/master/token/token_http_sync.png">
+<meta property="og:image" content="https://github.com/java5290/image/raw/master/token/token_http_async.png">
+<meta property="og:image" content="https://github.com/java5290/image/raw/master/token/jwt.png">
+<meta property="og:updated_time" content="2019-06-24T07:44:18.655Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="无状态应用之JWT的token实战">
 <meta name="twitter:description" content="第1章 无状态基于http协议的无状态性，再加上目前产品客户端的多样性，我们在设计分布式应用系统的时候就必须考虑应用的状态。 无状态应用：应用会话中不保存下次会话访问所需要的客户端数据，即通俗的讲每一次的应用访问都是新的访问，不依赖之前的数据进行响应。在分布式系统中，无状态应用可以简单、快速的进行应用水平扩展。 有状态应用：应用会话中保存客户端的数据，并在客户端下次的请求中会使用这些数据。 本文所">
-<meta name="twitter:image" content="https://java5290.github.io/blog/2019/06/20/无状态应用之JWT的token实战/image/token/token_create.png">
+<meta name="twitter:image" content="https://github.com/java5290/image/raw/master/token/token_create.png">
   
     <link rel="alternate" href="/blog/atom.xml" title="stay clam, keep a good attitude, just now!" type="application/atom+xml">
   
@@ -101,7 +101,7 @@
 <p>有状态应用：应用会话中保存客户端的数据，并在客户端下次的请求中会使用这些数据。</p>
 <p>本文所述，是基于JWT认证协议下的token（令牌）在实际应用中的刷新问题的记录。</p>
 <a id="more"></a>
-<h2 id="第2章-token签发"><a href="#第2章-token签发" class="headerlink" title="第2章 token签发"></a>第2章 token签发</h2><p><img src="./image/token/token_create.png" alt="token创建时序图"></p>
+<h2 id="第2章-token签发"><a href="#第2章-token签发" class="headerlink" title="第2章 token签发"></a>第2章 token签发</h2><p><img src="https://github.com/java5290/image/raw/master/token/token_create.png" alt="token创建时序图"></p>
 <h2 id="第3章-token刷新"><a href="#第3章-token刷新" class="headerlink" title="第3章 token刷新"></a>第3章 token刷新</h2><h3 id="3-1-为什么要刷新"><a href="#3-1-为什么要刷新" class="headerlink" title="3.1 为什么要刷新"></a>3.1 为什么要刷新</h3><p>安全：长时间使用同一个token存有风险。</p>
 <p>用户体验：无感刷新，延长用户访问系统时间。</p>
 <h3 id="3-2-怎么刷新"><a href="#3-2-怎么刷新" class="headerlink" title="3.2 怎么刷新"></a>3.2 怎么刷新</h3><p>为了提高系统的安全性，我们将刷新的情况分为两大类：</p>
@@ -110,12 +110,12 @@
 <li>异步请求刷新</li>
 </ul>
 <h4 id="3-2-1-同步请求"><a href="#3-2-1-同步请求" class="headerlink" title="3.2.1 同步请求"></a>3.2.1 同步请求</h4><p>客户端每次发送同步请求之前，必须手动验证token是否需要刷新，并且这个验证token本身的请求是使用ajax同步请求。</p>
-<p><img src="./image/token/token_http_sync.png" alt="同步请求token刷新时序图"></p>
+<p><img src="https://github.com/java5290/image/raw/master/token/token_http_sync.png" alt="同步请求token刷新时序图"></p>
 <h4 id="3-2-2-异步请求"><a href="#3-2-2-异步请求" class="headerlink" title="3.2.2 异步请求"></a>3.2.2 异步请求</h4><p>客户端每次发送异步请求的时候，必须在header中携带token值。在后端过滤器中验证token是否需要刷新。</p>
-<p><img src="./image/token/token_http_async.png" alt="异步请求token刷新时序图"></p>
+<p><img src="https://github.com/java5290/image/raw/master/token/token_http_async.png" alt="异步请求token刷新时序图"></p>
 <h3 id="3-3-刷新的并发问题"><a href="#3-3-刷新的并发问题" class="headerlink" title="3.3 刷新的并发问题"></a>3.3 刷新的并发问题</h3><p>在同一个页面过来好几个请求，恰好token该刷新了，那么我们不能拒绝请求，我们使用白名单解决这个问题。即当前token在缓存中记录30秒或者60秒，以便其他请求能继续执行，刷新后的token必须在controller的接口中能被获取，我们使用request包装器来解决这个问题。</p>
 <h3 id="3-4-F5刷新问题"><a href="#3-4-F5刷新问题" class="headerlink" title="3.4 F5刷新问题"></a>3.4 F5刷新问题</h3><p>基于浏览器的页面刷新机制，在token还在生存期内这样刷新是没问题的，假如token本身已过期，那么我们使用request包装器来解决这个问题。</p>
-<h2 id="第4章-JWT"><a href="#第4章-JWT" class="headerlink" title="第4章 JWT"></a>第4章 JWT</h2><h3 id="4-1-JWT介绍"><a href="#4-1-JWT介绍" class="headerlink" title="4.1 JWT介绍"></a>4.1 JWT介绍</h3><p><img src="./image/token/jwt.png" alt="JWT"><br>参考：<a href="http://blog.leapoahead.com/2015/09/06/understanding-jwt/" target="_blank" rel="noopener">http://blog.leapoahead.com/2015/09/06/understanding-jwt/</a></p>
+<h2 id="第4章-JWT"><a href="#第4章-JWT" class="headerlink" title="第4章 JWT"></a>第4章 JWT</h2><h3 id="4-1-JWT介绍"><a href="#4-1-JWT介绍" class="headerlink" title="4.1 JWT介绍"></a>4.1 JWT介绍</h3><p><img src="https://github.com/java5290/image/raw/master/token/jwt.png" alt="JWT"><br>参考：<a href="http://blog.leapoahead.com/2015/09/06/understanding-jwt/" target="_blank" rel="noopener">http://blog.leapoahead.com/2015/09/06/understanding-jwt/</a></p>
 <p>JWT：表示JSON Web Tokens，是一个非常轻巧的规范，这个规范允许我们使用JWT在用户和服务器之间传递安全可靠的信息，分三个部分：</p>
 <ul>
 <li>header、头部</li>
@@ -145,7 +145,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://java5290.github.io/blog/2019/06/20/无状态应用之JWT的token实战/" data-id="cjx4a8obv0005hwdk95n1fplo" class="article-share-link">Share</a>
+      <a data-url="https://java5290.github.io/blog/2019/06/20/无状态应用之JWT的token实战/" data-id="cjxa2xt9l0005ukdk4zt9v32o" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/blog/tags/分布式系统/">分布式系统</a></li></ul>
